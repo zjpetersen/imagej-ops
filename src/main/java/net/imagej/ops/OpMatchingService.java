@@ -79,6 +79,25 @@ public interface OpMatchingService extends SingletonService<Optimizer>,
 	 */
 	List<ModuleInfo> findCandidates(String name, Class<? extends Op> type);
 
+/*
+	OpTemplate
+	-> String name ?
+	-> Class<?> type ?
+	-> Object... args
+
+	SJC Converter: OpTemplate -> OpTemplate
+	Normalize.class, stuff...
+	ConvertScale.class, f(stuff)...
+
+	normalize(outputImgPlus, imgPlus, axisTypes)
+	->
+	normalize(outputImg, img, axisIndices)
+	->
+	slicewise(outputImg, img, op(normalize), axisIndices)
+	-> 
+	map(...)
+*/
+
 	/**
 	 * Filters a list of ops to those matching the given arguments.
 	 * 
