@@ -131,6 +131,17 @@ public class CreateImgTest<T extends NativeType<T>> extends AbstractOpTest {
 	}
 
 	@Test
+	public void testImageTypeFromFactory() {
+
+		final long[] dim = new long[] { 10, 10, 10 };
+		Img<?> img =
+			(Img<?>) ops.run(CreateImg.class, dim, null,
+				new ArrayImgFactory<ShortType>());
+
+		assertEquals("Image Type: ", ShortType.class, img.firstElement().getClass());
+	}
+
+	@Test
 	public void testCreateFromImgSameType() {
 
 		final Img<ByteType> input = PlanarImgs.bytes(10, 10, 10);
