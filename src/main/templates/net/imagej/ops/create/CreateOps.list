@@ -3,14 +3,14 @@ className = "CreateOps"
 authors = ["Christian Dietz"]
 ops = ```
 [
-	[name: "createimg",				iface: "CreateImg", 			extends: "Ops.Create"],
-	[name: "createimglabeling",		iface: "CreateImgLabeling", 	extends: "Ops.Create"],
-	[name: "createimgplus",			iface: "CreateImgPlus",	 		extends: "Ops.Create"],
-	[name: "createintegertype",		iface: "CreateIntegerType", 	extends: "Ops.Create"],	
-	[name: "createlabelingmapping",	iface: "CreateLabelingMapping", extends: "Ops.Create"],		
-	[name: "createtype",			iface: "CreateType",            extends: "Ops.Create"],
-	[name: "createimgfactory",		iface: "CreateImgFactory",		extends: "Ops.Create"],
-	[name: "createnativeimg",		iface: "CreateNativeImg", 		extends: "CreateImg"],
-	[name: "createnativetype",		iface: "CreateNativeType",		extends: "CreateType"]
+	[name: "createimg",				iface: "CreateImg", 			extends: "Ops.Create", parameter:"", 							parentparameter:""],
+	[name: "createimglabeling",		iface: "CreateImgLabeling", 	extends: "Ops.Create", parameter:"", 							parentparameter:""],
+	[name: "createimgplus",			iface: "CreateImgPlus",	 		extends: "Ops.Create", parameter:"", 							parentparameter:""],
+	[name: "createintegertype",		iface: "CreateIntegerType", 	extends: "Ops.Create", parameter:"", 							parentparameter:""],	
+	[name: "createlabelingmapping",	iface: "CreateLabelingMapping", extends: "Ops.Create", parameter:"", 							parentparameter:""],		
+	[name: "createtype",			iface: "CreateType",            extends: "Ops.Create", parameter:"<T extends Type<T>>", 		parentparameter:""],
+	[name: "createimgfactory",		iface: "CreateImgFactory",		extends: "Ops.Create", parameter:"", 							parentparameter:""],
+	[name: "createnativeimg",		iface: "CreateNativeImg", 		extends: "CreateImg",  parameter:"", 							parentparameter:""],
+	[name: "createnativetype",		iface: "CreateNativeType",		extends: "CreateType", parameter:"<T extends NativeType<T>>",   parentparameter:"<T>"]
 ]
 ```
