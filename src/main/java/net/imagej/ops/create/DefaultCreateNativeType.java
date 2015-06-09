@@ -18,8 +18,8 @@ import org.scijava.plugin.Plugin;
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
 @Plugin(type = Op.class)
-public class DefaultCreateNativeType implements
-	CreateNativeType, OutputOp<DoubleType>
+public class DefaultCreateNativeType implements CreateNativeType<DoubleType>,
+	OutputOp<DoubleType>
 {
 
 	@Parameter(type = ItemIO.OUTPUT)
