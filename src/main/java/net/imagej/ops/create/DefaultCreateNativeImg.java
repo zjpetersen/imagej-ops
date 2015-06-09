@@ -55,7 +55,7 @@ import org.scijava.plugin.Plugin;
  * @param <T>
  */
 @Plugin(type = Op.class)
-public class DefaultCreateImg<T extends NativeType<T>> implements
+public class DefaultCreateNativeImg<T extends NativeType<T>> implements
 	CreateNativeImg, OutputOp<Img<T>>
 {
 
