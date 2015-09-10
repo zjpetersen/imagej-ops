@@ -672,6 +672,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public LabelingNamespace labeling() {
 		return namespace(LabelingNamespace.class);
 	}
+	
+	@Override
+	public Lbp2dNamespace lbp2d() {
+		return namespace(Lbp2dNamespace.class);
+	}
 
 	@Override
 	public LogicNamespace logic() {

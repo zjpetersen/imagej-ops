@@ -615,6 +615,9 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "labeling" namespace. */
 	LabelingNamespace labeling();
+	
+	/** Gateway into ops of the "lbp2d" namespace. */
+	Lbp2dNamespace lbp2d();
 
 	/** Gateway into ops of the "logic" namespace. */
 	LogicNamespace logic();
