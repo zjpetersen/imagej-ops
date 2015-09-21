@@ -53,7 +53,7 @@ public abstract class AbstractLbp2dFeature<I extends RealType<I>>
 
 	@Override
 	public boolean conforms() {
-		return getInput().numDimensions() == 2;
+		return in().numDimensions() == 2;
 	}
 	
 	/**

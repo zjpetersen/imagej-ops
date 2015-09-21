@@ -35,8 +35,8 @@ import java.util.Iterator;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
+import net.imagej.ops.FunctionOp;
 import net.imagej.ops.OpService;
-import net.imagej.ops.Ops.Lbp.Lbp2d;
 import net.imagej.ops.image.histogram.HistogramCreate;
 import net.imglib2.Cursor;
 import net.imglib2.RandomAccess;
@@ -55,17 +55,22 @@ import net.imglib2.view.Views;
  * @param <I>
  * @param <O>
  */
-@Plugin(type = Lbp2dFeature.class, label = "2d Local Binary Pattern", name = Lbp2d.NAME)
+@Plugin(type = Lbp2dFeature.class, label = "2d Local Binary Pattern", name = "Lbp2d")
 public class DefaultLbp2d<I extends RealType<I>> extends AbstractLbp2dFeature<I>implements Lbp2dFeature<I> {
-
-	@Parameter
-	protected OpService ops;
 
 	@Parameter(required = true)
 	private int distance = 1;
 	
 	@Parameter(required = true)
 	private int histogramSize = 256;
+
+	@SuppressWarnings("rawtypes")
+	private FunctionOp<ArrayList, Histogram1d> histOp;
+	
+	@Override
+	public void initialize() {
+		histOp = ops().function(HistogramCreate.class, Histogram1d.class, ArrayList.class, histogramSize);
+	}
 
 	@Override
 	public ArrayList<LongType> createOutput(RandomAccessibleInterval<I> input) {
@@ -98,7 +103,7 @@ public class DefaultLbp2d<I extends RealType<I>> extends AbstractLbp2dFeature<I>
 			numberList.add(new LongType(resultBinaryValue));
 		}
 
-		Histogram1d<Integer> hist = (Histogram1d<Integer>) ops.run(HistogramCreate.class, numberList, histogramSize);
+		Histogram1d<Integer> hist = histOp.compute(numberList);
 		Iterator<LongType> c = hist.iterator();
 		while (c.hasNext()) {
 			output.add(new LongType(c.next().get()));
