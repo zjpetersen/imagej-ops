@@ -29,9 +29,13 @@
  */
 package net.imagej.ops.features.lbp2d;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.junit.Test;
 
 import net.imagej.ops.features.AbstractFeatureTest;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
  * 
@@ -44,7 +48,12 @@ public class Lbp2dFeatureTest extends AbstractFeatureTest {
 
 	@Test
 	public void testLbp2d() {
-		ops.lbp2d().lbp2d(random, 1);
+		ArrayList<LongType> hist = ops.lbp2d().lbp2d(random, 1,4);
+		Iterator<LongType> it = hist.iterator();
+		while(it.hasNext()){
+			System.out.println(it.next().getRealDouble());
+		}
+
 	}
 	
 }

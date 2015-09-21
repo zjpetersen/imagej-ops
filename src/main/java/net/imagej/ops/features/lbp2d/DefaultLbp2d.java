@@ -30,6 +30,7 @@
 package net.imagej.ops.features.lbp2d;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -55,43 +56,54 @@ import net.imglib2.view.Views;
  * @param <O>
  */
 @Plugin(type = Lbp2dFeature.class, label = "2d Local Binary Pattern", name = Lbp2d.NAME)
-public class DefaultLbp2d<I extends RealType<I>, O extends RealType<O>> extends AbstractLbp2dFeature<I, O>
-		implements Lbp2dFeature<I, O> {
-	
+public class DefaultLbp2d<I extends RealType<I>> extends AbstractLbp2dFeature<I>implements Lbp2dFeature<I> {
+
 	@Parameter
 	protected OpService ops;
-	
+
 	@Parameter(required = true)
 	private int distance = 1;
+	
+	@Parameter(required = true)
+	private int histogramSize = 256;
+
+	@Override
+	public ArrayList<LongType> createOutput(RandomAccessibleInterval<I> input) {
+		return new ArrayList<LongType>();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void compute(RandomAccessibleInterval<I> input, O output) {
-		
+	public void compute(RandomAccessibleInterval<I> input, ArrayList<LongType> output) {
 		ArrayList<LongType> numberList = new ArrayList<LongType>();
 		RandomAccess<I> raInput = Views.extendZero(input).randomAccess();
 		final Cursor<I> cInput = Views.flatIterable(input).cursor();
-		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh = new ClockwiseDistanceNeighborhoodIterator<I>(raInput, distance);
-		
+		final ClockwiseDistanceNeighborhoodIterator<I> cNeigh = new ClockwiseDistanceNeighborhoodIterator<I>(raInput,
+				distance);
+
 		while (cInput.hasNext()) {
 			cInput.next();
 			double centerValue = cInput.get().getRealDouble();
-			
+
 			int resultBinaryValue = 0;
-			
+
 			cNeigh.reset();
 			while (cNeigh.hasNext()) {
 				double nValue = cNeigh.next().getRealDouble();
 				int pos = cNeigh.getIndex();
-				if (nValue > centerValue) {
+				if (nValue >= centerValue) {
 					resultBinaryValue |= (1 << pos);
 				}
 			}
 			numberList.add(new LongType(resultBinaryValue));
 		}
+
+		Histogram1d<Integer> hist = (Histogram1d<Integer>) ops.run(HistogramCreate.class, numberList, histogramSize);
+		Iterator<LongType> c = hist.iterator();
+		while (c.hasNext()) {
+			output.add(new LongType(c.next().get()));
+		}
 		
-		Histogram1d<Integer> hist = (Histogram1d<Integer>) ops.run(HistogramCreate.class, numberList, 16);
-		System.out.println("done");
 	}
 
 }

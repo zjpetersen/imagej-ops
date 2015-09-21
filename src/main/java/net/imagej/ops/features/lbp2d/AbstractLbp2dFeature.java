@@ -29,13 +29,15 @@
  */
 package net.imagej.ops.features.lbp2d;
 
+import java.util.ArrayList;
+
 import net.imagej.ops.AbstractHybridOp;
 import net.imagej.ops.Contingent;
 import net.imglib2.RandomAccess;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.Type;
 import net.imglib2.type.numeric.RealType;
-import net.imglib2.type.numeric.real.DoubleType;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
  * 
@@ -46,15 +48,8 @@ import net.imglib2.type.numeric.real.DoubleType;
  * @param <I>
  * @param <O>
  */
-public abstract class AbstractLbp2dFeature<I extends RealType<I>, O extends RealType<O>>
-		extends AbstractHybridOp<RandomAccessibleInterval<I>, O>implements Lbp2dFeature<I, O>, Contingent {
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public O createOutput(RandomAccessibleInterval<I> input) {
-		return (O) new DoubleType();
-	}
-
+public abstract class AbstractLbp2dFeature<I extends RealType<I>>
+		extends AbstractHybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>implements Lbp2dFeature<I>, Contingent {
 
 	@Override
 	public boolean conforms() {

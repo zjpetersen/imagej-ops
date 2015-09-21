@@ -48,6 +48,6 @@ public class Lbp2dNamespaceTest extends AbstractNamespaceTest {
 	 */
 	@Test
 	public void testCompleteness() {
-		assertComplete("lpb2d", Lbp2dNamespace.class);
+		assertComplete("lbp2d", Lbp2dNamespace.class);
 	}
 }

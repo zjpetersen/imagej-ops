@@ -29,9 +29,12 @@
  */
 package net.imagej.ops.features.lbp2d;
 
+import java.util.ArrayList;
+
 import net.imagej.ops.HybridOp;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.LongType;
 
 /**
  * Marker interface for 2D local binary pattern feature.
@@ -43,7 +46,7 @@ import net.imglib2.type.numeric.RealType;
  * @param <O>
  * 		type of output value
  */
-public interface Lbp2dFeature<I extends RealType<I>, O extends RealType<O>>
-	extends HybridOp<RandomAccessibleInterval<I>, O>{
+public interface Lbp2dFeature<I extends RealType<I>>
+	extends HybridOp<RandomAccessibleInterval<I>, ArrayList<LongType>>{
 	// NB: marker interface
 }
