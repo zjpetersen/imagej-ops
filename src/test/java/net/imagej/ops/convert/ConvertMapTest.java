@@ -1,0 +1,129 @@
+
+package net.imagej.ops.convert;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import net.imagej.ops.AbstractOpTest;
+import net.imagej.ops.convert.ConvertTypes.ComplexToFloat32;
+import net.imagej.ops.convert.ConvertTypes.ComplexToUint8;
+import net.imglib2.Cursor;
+import net.imglib2.FinalInterval;
+import net.imglib2.img.Img;
+import net.imglib2.img.array.ArrayImgs;
+import net.imglib2.type.numeric.ComplexType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.type.numeric.real.FloatType;
+import net.imglib2.util.Intervals;
+
+import org.junit.Test;
+
+/**
+ * Tests that {@link ConvertTypes} can convert Img using Map
+ *
+ * @author Alison Walter
+ */
+public class ConvertMapTest extends AbstractOpTest {
+
+	private final static long[] dims = { 3, 3 };
+
+	@Test
+	public <C extends ComplexType<C>> void testLossless() {
+
+		final byte[] inArray =
+			{ (byte) 12, (byte) 122, (byte) 9, (byte) -6, (byte) 56, (byte) 34,
+				(byte) 108, (byte) 1, (byte) 73 };
+		final Img<UnsignedByteType> in = generateUnsignedByteImg(inArray);
+
+		final float[] outArray =
+			{ 134.7f, -13089.3208f, 209.3f, 0.6f, 84.0f, -543.1f, 0f, 34.908f,
+				592087.0957f };
+		final Img<FloatType> out = generateFloatImg(outArray);
+
+		final Cursor<UnsignedByteType> inC1 = in.cursor();
+		final Cursor<FloatType> outC1 = out.cursor();
+
+		while (inC1.hasNext()) {
+			assertNotEquals(inC1.next().getRealDouble(),
+				outC1.next().getRealDouble(), 0d);
+		}
+
+		ops.map(out, in, new ComplexToFloat32<C>());
+
+		final Cursor<UnsignedByteType> inC2 = in.cursor();
+		final Cursor<FloatType> outC2 = out.cursor();
+
+		while (inC2.hasNext()) {
+			assertEquals(inC2.next().getRealDouble(), outC2.next().getRealDouble(), 0);
+		}
+	}
+
+	@Test
+	public <C extends ComplexType<C>> void testLossy() {
+
+		final float[] inArray =
+			{ 12.7f, -13089.3208f, 78.023f, 0.04f, 12.01f, -1208.90f, 109432.109f,
+				1204.88f, 87.6f };
+		final Img<FloatType> in = generateFloatImg(inArray);
+
+		final byte[] outArray =
+			{ (byte) 4, (byte) 123, (byte) 18, (byte) 64, (byte) 90, (byte) 120,
+				(byte) 12, (byte) 17, (byte) 73 };
+		final Img<UnsignedByteType> out = generateUnsignedByteImg(outArray);
+
+		ops.map(out, in, new ComplexToUint8<C>());
+
+		final Cursor<FloatType> inC = in.cursor();
+		final Cursor<UnsignedByteType> outC = out.cursor();
+
+		while (inC.hasNext()) {
+
+			final double inV = inC.next().getRealDouble();
+			final double outV = outC.next().getRealDouble();
+
+			// values won't be equal because the conversion is lossy
+			assertNotEquals(inV, outV, 0);
+
+			// uint8 masks float values to be 8 bits
+			assertEquals(Types.uint8(inV), outV, 0);
+
+		}
+	}
+
+	// helper methods
+	private static Img<FloatType> generateFloatImg(final float[] values) {
+
+		final float[] array =
+			new float[(int) Intervals.numElements(new FinalInterval(dims))];
+
+		if (array.length != values.length) {
+			System.out.println("Number of values doesn't match dimmensions");
+			return null;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = values[i];
+		}
+
+		return ArrayImgs.floats(array, dims);
+	}
+
+	private static Img<UnsignedByteType> generateUnsignedByteImg(
+		final byte[] values)
+	{
+
+		final byte[] array =
+			new byte[(int) Intervals.numElements(new FinalInterval(dims))];
+
+		if (array.length != values.length) {
+			System.out.println("Number of values doesn't match dimmensions");
+			return null;
+		}
+
+		for (int i = 0; i < array.length; i++) {
+			array[i] = values[i];
+		}
+
+		return ArrayImgs.unsignedBytes(array, dims);
+	}
+
+}
