@@ -54,6 +54,7 @@ import net.imagej.ops.math.MathNamespace;
 import net.imagej.ops.stats.StatsNamespace;
 import net.imagej.ops.thread.ThreadNamespace;
 import net.imagej.ops.threshold.ThresholdNamespace;
+import net.imagej.ops.views.ViewNamespace;
 import net.imglib2.IterableInterval;
 import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
@@ -711,6 +712,10 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 		return namespace(ThresholdNamespace.class);
 	}
 	
+	@Override
+	public ViewNamespace view() {
+		return namespace(ViewNamespace.class);
+	}
 
 	// -- Helper methods --
 
