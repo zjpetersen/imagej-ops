@@ -29,8 +29,6 @@
  */
 package net.imagej.ops.geom.helper;
 
-import java.util.List;
-
 /**
  * A Horizon is the result of n neighboring {@link TriangularFacet} which are merged.
  * The horizon is a polygon of all outer edges/vertices of the merged
@@ -44,9 +42,8 @@ public class Horizon extends UpdateablePointSet {
 	 * Create a new {@link Horizon} from a {@link TriangularFacet}
 	 * @param f the facet
 	 */
-	@SuppressWarnings("unchecked")
 	public Horizon (final TriangularFacet f) {
-		vertices = (List<Vertex>) f.getVertices();
+		vertices = f.getVertices();
 		neighbors = f.getNeighbors();
 	}
 

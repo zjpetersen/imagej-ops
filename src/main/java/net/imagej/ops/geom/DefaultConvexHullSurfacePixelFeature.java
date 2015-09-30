@@ -44,7 +44,7 @@ import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Generic implementation of {@link Geometric3D.ConvexHullSurfacePixel}. 
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.ConvexHullSurfacePixel}. 
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */

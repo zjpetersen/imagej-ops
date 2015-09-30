@@ -77,7 +77,7 @@ public class DefaultMarchingCubes<T extends BooleanType<T>>
 	@Parameter
 	private OpService ops;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "cast"})
 	@Override
 	public DefaultMesh compute(final RandomAccessibleInterval<T> input) {
 		DefaultMesh output = new DefaultMesh();
