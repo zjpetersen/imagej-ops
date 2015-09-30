@@ -35,13 +35,13 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
+import net.imagej.ops.Ops.Geometric.ConvexHull;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imagej.ops.geom.helper.Mesh;
 import net.imglib2.roi.IterableRegion;
 import net.imglib2.type.BooleanType;
 
-@Plugin(type = Op.class, name = ConvexHull3D.NAME)
+@Plugin(type = Op.class, name = ConvexHull.NAME)
 public class DefaultConvexHull3DFromMC<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, Mesh> 

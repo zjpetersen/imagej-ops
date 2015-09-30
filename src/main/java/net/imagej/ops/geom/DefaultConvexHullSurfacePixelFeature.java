@@ -36,7 +36,7 @@ import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Contingent;
 import net.imagej.ops.FunctionOp;
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Geometric3D;
+import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.geom.helper.DefaultMesh;
 import net.imagej.ops.geom.helper.Mesh;
 import net.imglib2.roi.IterableRegion;
@@ -44,17 +44,17 @@ import net.imglib2.type.BooleanType;
 import net.imglib2.type.numeric.real.DoubleType;
 
 /**
- * Generic implementation of {@link net.imagej.ops.Ops.Geometric3D.ConvexHullSurfacePixel}. 
+ * Generic implementation of {@link net.imagej.ops.Ops.Geometric.BoundaryPixelConvexHull}. 
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  */
-@Plugin(type = Op.class, name = Geometric3D.ConvexHullSurfacePixel.NAME, label = "Geometric3D: ConvexHullSurfacePixel", priority = Priority.VERY_HIGH_PRIORITY)
+@Plugin(type = Op.class, name = Geometric.BoundaryPixelConvexHull.NAME, label = "Geometric3D: ConvexHullSurfacePixel", priority = Priority.VERY_HIGH_PRIORITY)
 public class DefaultConvexHullSurfacePixelFeature<B extends BooleanType<B>>
 		extends
 			AbstractFunctionOp<IterableRegion<B>, DoubleType>
 		implements
 			GeometricOp<IterableRegion<B>, DoubleType>,
-			Geometric3D.ConvexHullSurfacePixel,
+			Geometric.BoundaryPixelConvexHull,
 			Contingent {
 
 	private FunctionOp<IterableRegion<B>, Mesh> convexHull;

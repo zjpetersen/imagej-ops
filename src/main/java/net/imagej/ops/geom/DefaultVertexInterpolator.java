@@ -34,7 +34,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Op;
-import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Geometric;
 
 /**
  * Linearly interpolate the position where an isosurface cuts an edge
@@ -42,7 +42,7 @@ import net.imagej.ops.Ops.Descriptor3D;
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz
  */
-@Plugin(type = Op.class, name = Descriptor3D.VertexInterpolator.NAME)
+@Plugin(type = Op.class, name = Geometric.VertexInterpolator.NAME)
 public class DefaultVertexInterpolator extends AbstractVertexInterpolator {
 
 	
