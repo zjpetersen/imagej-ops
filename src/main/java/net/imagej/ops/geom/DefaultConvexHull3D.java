@@ -41,6 +41,12 @@ import org.scijava.plugin.Plugin;
 import net.imagej.ops.AbstractFunctionOp;
 import net.imagej.ops.Op;
 import net.imagej.ops.Ops.Descriptor3D.ConvexHull3D;
+import net.imagej.ops.geom.helper.DefaultMesh;
+import net.imagej.ops.geom.helper.Horizon;
+import net.imagej.ops.geom.helper.Mesh;
+import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imagej.ops.geom.helper.UpdateablePointSet;
+import net.imagej.ops.geom.helper.Vertex;
 
 /**
  * This quickhull implementation is based on the paper
