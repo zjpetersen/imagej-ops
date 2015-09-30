@@ -27,55 +27,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
-import static org.junit.Assert.assertEquals;
-import net.imagej.ops.AbstractOpTest;
-import net.imagej.ops.geom.BitTypeVertexInterpolator;
+import org.scijava.plugin.Plugin;
 
-import org.junit.Test;
+import net.imagej.ops.AbstractFunctionOp;
+import net.imagej.ops.Op;
+import net.imagej.ops.Ops.Descriptor3D;
+import net.imagej.ops.Ops.Descriptor3D.Centroid;
+import net.imglib2.Cursor;
+import net.imglib2.roi.IterableRegion;
+import net.imglib2.type.BooleanType;
 
 /**
- * This class tests the {@link BitTypeVertexInterpolator}. 
+ * This {@link Op} computes the centroid of a {@link IterableRegion} (Label).
  * 
  * @author Tim-Oliver Buchholz, University of Konstanz.
  *
+ * @param <B> a Boolean Type
  */
-public class BitTypeVertexInterpolatorTest extends AbstractOpTest {
+@Plugin(type = Op.class, name = Descriptor3D.Centroid.NAME)
+public class DefaultCentroid<B extends BooleanType<B>>
+		extends
+			AbstractFunctionOp<IterableRegion<B>, double[]> implements Centroid {
 
-	@Test
-	public void interpolatorTest_v2() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 0;
-			double v2 = 1;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-				assertEquals(5, res[0], 1e-10);
-				assertEquals(0, res[1], 1e-10);
-				assertEquals(5, res[2], 1e-10);
+	@Override
+	public double[] compute(final IterableRegion<B> input) {
+		int numDimensions = input.numDimensions();
+		double[] output = new double[numDimensions];
+		Cursor<Void> c = input.localizingCursor();
+		while (c.hasNext()) {
+			c.fwd();
+			double[] pos = new double[numDimensions];
+			c.localize(pos);
+			for (int i = 0; i < output.length; i++) {
+				output[i] += pos[i];
+			}
+		}
+
+		for (int i = 0; i < output.length; i++) {
+			output[i] = output[i] / (double)input.size();
+		}
+		
+		return output;
 	}
-	
-	@Test
-	public void interpolatorTest_v1() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 1;
-			double v2 = 0;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-			assertEquals(5, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(5, res[2], 1e-10);
-	}
-	
-	@Test
-	public void interpolatorTest_equal() {
-			int[] p1 = new int[]{0,0,0};
-			int[] p2 = new int[]{10, 0, 10};
-			double v1 = 1;
-			double v2 = 1;
-			double[] res = (double[]) ops.run(BitTypeVertexInterpolator.class, p1, p2, v1, v2);
-			assertEquals(5, res[0], 1e-10);
-			assertEquals(0, res[1], 1e-10);
-			assertEquals(5, res[2], 1e-10);
-	}
+
 }
