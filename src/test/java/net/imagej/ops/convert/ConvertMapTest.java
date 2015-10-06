@@ -59,9 +59,7 @@ public class ConvertMapTest extends AbstractOpTest {
 	@Test
 	public <C extends ComplexType<C>> void testLossless() {
 
-		final byte[] inArray =
-			{ (byte) 12, (byte) 122, (byte) 9, (byte) -6, (byte) 56, (byte) 34,
-				(byte) 108, (byte) 1, (byte) 73 };
+		final byte[] inArray = { 12, 122, 9, -6, 56, 34, 108, 1, 73 };
 		final Img<UnsignedByteType> in = generateUnsignedByteImg(inArray);
 
 		final float[] outArray =
