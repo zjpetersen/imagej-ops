@@ -51,7 +51,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 /**
- * Forward FFT that operates on an RAI and wraps FFTMethods.
+ * Forward FFT computer that operates on an RAI and wraps FFTMethods.
  * 
  * @author Brian Northan
  * @param <T>
@@ -59,17 +59,21 @@ import org.scijava.plugin.Plugin;
  */
 @Plugin(type = Ops.Filter.FFT.class, name = Ops.Filter.FFT.NAME,
 	priority = Priority.HIGH_PRIORITY)
-public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>> extends
+public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>>
+	extends
 	AbstractComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<C>>
 	implements Ops.Filter.FFT
 {
 
 	/**
-	 * generates the out of bounds strategy for the extended area
+	 * Generates the out of bounds strategy for the extended area
 	 */
 	@Parameter(required = false)
 	private OutOfBoundsFactory<T, RandomAccessibleInterval<T>> obf;
 
+	/**
+	 * The size of the image after padding
+	 */
 	@Parameter(required = false)
 	private long[] paddedSize;
 
@@ -79,6 +83,7 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>> exte
 	{
 		RandomAccessibleInterval<T> inputRAI;
 
+		// if no paddedSize was passed in make paddedSize equal to the input size
 		if (paddedSize == null) {
 
 			paddedSize = new long[input.numDimensions()];
@@ -88,7 +93,8 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>> exte
 			}
 		}
 
-		// Extend input to padded size using a View
+		// If paddedSize is different than the input size, extend the input to
+		// paddedSize using a View
 		if (!FFTMethods.dimensionsEqual(input, paddedSize)) {
 
 			if (obf == null) {
@@ -112,8 +118,10 @@ public class FFTComputerOp<T extends RealType<T>, C extends ComplexType<C>> exte
 		final int numThreads = Runtime.getRuntime().availableProcessors();
 		final ExecutorService service = Executors.newFixedThreadPool(numThreads);
 
+		// perform a real to complex FFT in the first dimension
 		FFTMethods.realToComplex(inputRAI, output, 0, false, service);
 
+		// loop and perform complex to complex FFT in the remaining dimensions
 		for (int d = 1; d < input.numDimensions(); d++)
 			FFTMethods.complexToComplex(output, d, true, false, service);
 	}
