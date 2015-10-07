@@ -46,39 +46,34 @@ public final class RAIs {
 	// -- Utility methods --
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-		computer(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in, final Object... otherArgs)
-	{
-		return (ComputerOp) ops.computer(opType, RandomAccessibleInterval.class,
-			in, otherArgs);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>>
-		function(final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in, final Object... otherArgs)
-	{
-		return (FunctionOp) ops.function(opType, RandomAccessibleInterval.class,
-			in, otherArgs);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <T>
-		HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
+	public static <T> ComputerOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> computer(
 			final OpEnvironment ops, final Class<? extends Op> opType,
-			final RandomAccessibleInterval<T> in, final Object... otherArgs)
-	{
-		return (HybridOp) ops.hybrid(opType, RandomAccessibleInterval.class, in,
-			otherArgs);
+			final RandomAccessibleInterval<T> in, final Object... otherArgs) {
+		return (ComputerOp) ops.computer(opType,
+				RandomAccessibleInterval.class,
+				in == null ? RandomAccessibleInterval.class : in, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T> FunctionOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> function(
+			final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in, final Object... otherArgs) {
+		return (FunctionOp) ops.function(opType,
+				RandomAccessibleInterval.class,
+				in == null ? RandomAccessibleInterval.class : in, otherArgs);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T> HybridOp<RandomAccessibleInterval<T>, RandomAccessibleInterval<T>> hybrid(
+			final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> in, final Object... otherArgs) {
+		return (HybridOp) ops.hybrid(opType, RandomAccessibleInterval.class,
+				in == null ? RandomAccessibleInterval.class : in, otherArgs);
 	}
 
 	public static <T> InplaceOp<RandomAccessibleInterval<T>> inplace(
-		final OpEnvironment ops, final Class<? extends Op> opType,
-		final RandomAccessibleInterval<T> arg, final Object... otherArgs)
-	{
+			final OpEnvironment ops, final Class<? extends Op> opType,
+			final RandomAccessibleInterval<T> arg, final Object... otherArgs) {
 		return ops.inplace(opType, arg, otherArgs);
 	}
 
