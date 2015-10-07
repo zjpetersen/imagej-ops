@@ -37,11 +37,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.ConvertNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
+import net.imagej.ops.features.zernike.ZernikeNamespace;
+import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.filter.FilterNamespace;
+import net.imagej.ops.geometric.Geometric2DNamespace;
+import net.imagej.ops.geometric3d.Geometric3DNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
@@ -56,7 +60,6 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.AbstractContextual;
 import org.scijava.command.CommandInfo;
@@ -245,32 +248,6 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	}
 
 	// -- Operation shortcuts - global namespace --
-
-	@Override
-	public Object convert(final Object... args) {
-		return run(Ops.Convert.NAME, args);
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>> O convert(final O out,
-		final I in)
-	{
-		@SuppressWarnings("unchecked")
-		final O result = (O) run(Ops.Convert.NAME, out, in);
-		return result;
-	}
-
-	@Override
-	public <I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
-		convert(final IterableInterval<O> out, final IterableInterval<I> in,
-			final ConvertPix<I, O> pixConvert)
-	{
-		@SuppressWarnings("unchecked")
-		final IterableInterval<O> result =
-			(IterableInterval<O>) run(net.imagej.ops.convert.ConvertIterableInterval.class, out,
-				in, pixConvert);
-		return result;
-	}
 
 	@Override
 	public Object eval(final Object... args) {
@@ -639,6 +616,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	// -- Operation shortcuts - other namespaces --
 
 	@Override
+	public ConvertNamespace convert() {
+		return namespace(ConvertNamespace.class);
+	}
+
+	@Override
 	public CreateNamespace create() {
 		return namespace(CreateNamespace.class);
 	}
@@ -651,6 +633,16 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	@Override
 	public FilterNamespace filter() {
 		return namespace(FilterNamespace.class);
+	}
+	
+	@Override
+	public Geometric2DNamespace geometric2d() {
+		return namespace(Geometric2DNamespace.class);
+	}
+
+	@Override
+	public Geometric3DNamespace geometric3d() {
+		return namespace(Geometric3DNamespace.class);
 	}
 
 	@Override
@@ -667,7 +659,7 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public ImageMomentsNamespace imagemoments() {
 		return namespace(ImageMomentsNamespace.class);
 	}
-
+	
 	@Override
 	public LabelingNamespace labeling() {
 		return namespace(LabelingNamespace.class);
@@ -687,6 +679,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	public StatsNamespace stats() {
 		return namespace(StatsNamespace.class);
 	}
+	
+	@Override
+	public TamuraNamespace tamura() {
+		return namespace(TamuraNamespace.class);
+	}
 
 	@Override
 	public ThreadNamespace thread() {
@@ -696,6 +693,11 @@ public abstract class AbstractOpEnvironment extends AbstractContextual
 	@Override
 	public ThresholdNamespace threshold() {
 		return namespace(ThresholdNamespace.class);
+	}
+	
+	@Override
+	public ZernikeNamespace zernike() {
+		return namespace(ZernikeNamespace.class);
 	}
 
 	// -- Helper methods --

@@ -34,11 +34,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.imagej.ops.convert.ConvertPix;
+import net.imagej.ops.convert.ConvertNamespace;
 import net.imagej.ops.create.CreateNamespace;
 import net.imagej.ops.deconvolve.DeconvolveNamespace;
 import net.imagej.ops.features.haralick.HaralickNamespace;
+import net.imagej.ops.features.zernike.ZernikeNamespace;
+import net.imagej.ops.features.tamura2d.TamuraNamespace;
 import net.imagej.ops.filter.FilterNamespace;
+import net.imagej.ops.geometric.Geometric2DNamespace;
+import net.imagej.ops.geometric3d.Geometric3DNamespace;
 import net.imagej.ops.image.ImageNamespace;
 import net.imagej.ops.imagemoments.ImageMomentsNamespace;
 import net.imagej.ops.labeling.LabelingNamespace;
@@ -53,7 +57,6 @@ import net.imglib2.RandomAccessible;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.algorithm.neighborhood.Shape;
 import net.imglib2.type.Type;
-import net.imglib2.type.numeric.RealType;
 
 import org.scijava.Contextual;
 import org.scijava.command.CommandInfo;
@@ -403,23 +406,6 @@ public interface OpEnvironment extends Contextual {
 
 	// -- Operation shortcuts - global namespace --
 
-	/** Executes the "convert" operation on the given arguments. */
-	@OpMethod(op = Ops.Convert.class)
-	Object convert(Object... args);
-
-	/** Executes the "convert" operation on the given arguments. */
-	@OpMethod(ops = { net.imagej.ops.convert.ConvertPixClip.class,
-		net.imagej.ops.convert.ConvertPixNormalizeScale.class,
-		net.imagej.ops.convert.ConvertPixScale.class,
-		net.imagej.ops.convert.ConvertPixCopy.class })
-	<I extends RealType<I>, O extends RealType<O>> O convert(O out, I in);
-
-	/** Executes the "convert" operation on the given arguments. */
-	@OpMethod(op = net.imagej.ops.convert.ConvertIterableInterval.class)
-	<I extends RealType<I>, O extends RealType<O>> IterableInterval<O>
-		convert(IterableInterval<O> out, IterableInterval<I> in,
-			ConvertPix<I, O> pixConvert);
-
 	/** Executes the "eval" operation on the given arguments. */
 	@OpMethod(op = Ops.Eval.class)
 	Object eval(Object... args);
@@ -598,6 +584,9 @@ public interface OpEnvironment extends Contextual {
 
 	// -- Operation shortcuts - other namespaces --
 
+	/** Gateway into ops of the "convert" namespace. */
+	ConvertNamespace convert();
+
 	/** Gateway into ops of the "create" namespace. */
 	CreateNamespace create();
 
@@ -606,12 +595,21 @@ public interface OpEnvironment extends Contextual {
 
 	/** Gateway into ops of the "filter" namespace. */
 	FilterNamespace filter();
+	
+	/** Gateway into ops of the "geometric" namespace. */
+	Geometric2DNamespace geometric2d();
+	
+	/** Gateway into ops of the "geometric3d" namespace. */
+	Geometric3DNamespace geometric3d();
 
 	/** Gateway into ops of the "haralick " namespace. */
 	HaralickNamespace haralick();
 
 	/** Gateway into ops of the "image" namespace. */
 	ImageNamespace image();
+	
+	/** Gateway into ops of the "image moments" namespace. */
+	ImageMomentsNamespace imagemoments();
 
 	/** Gateway into ops of the "labeling" namespace. */
 	LabelingNamespace labeling();
@@ -625,13 +623,16 @@ public interface OpEnvironment extends Contextual {
 	/** Gateway into ops of the "stats" namespace. */
 	StatsNamespace stats();
 
-	/** Gateway into ops of the "image moments" namespace. */
-	ImageMomentsNamespace imagemoments();
-
+	/** Gateway into ops of the "tamura" namespace */
+	TamuraNamespace tamura();
+	
 	/** Gateway into ops of the "thread" namespace. */
 	ThreadNamespace thread();
 
 	/** Gateway into ops of the "threshold" namespace. */
 	ThresholdNamespace threshold();
+	
+	/** Gateway into ops of the "zernike" namespace. */
+	ZernikeNamespace zernike();
 
 }

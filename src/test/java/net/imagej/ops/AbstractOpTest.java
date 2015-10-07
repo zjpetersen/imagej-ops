@@ -46,6 +46,7 @@ import net.imglib2.util.Intervals;
 import org.junit.After;
 import org.junit.Before;
 import org.scijava.Context;
+import org.scijava.cache.CacheService;
 import org.scijava.plugin.Parameter;
 
 /**
@@ -71,7 +72,7 @@ public abstract class AbstractOpTest {
 
 	/** Subclasses can override to create a context with different services. */
 	protected Context createContext() {
-		return new Context(OpService.class, OpMatchingService.class);
+		return new Context(OpService.class, OpMatchingService.class, CacheService.class);
 	}
 
 	/** Sets up a SciJava context with {@link OpService}. */
