@@ -36,7 +36,8 @@ import net.imagej.ops.OpService;
 import net.imagej.ops.Ops.Geometric;
 import net.imagej.ops.Ops.Geometric.MarchingCubes;
 import net.imagej.ops.geom.helper.DefaultMesh;
-import net.imagej.ops.geom.helper.TriangularFacet;
+import net.imagej.ops.geom.helper.DefaultTriangularFacet;
+import net.imagej.ops.geom.helper.Mesh;
 import net.imagej.ops.geom.helper.Vertex;
 import net.imglib2.Cursor;
 import net.imglib2.FinalInterval;
@@ -63,7 +64,7 @@ import org.scijava.plugin.Plugin;
 @Plugin(type = Op.class, name = Geometric.MarchingCubes.NAME)
 public class DefaultMarchingCubes<T extends BooleanType<T>>
 		extends
-			AbstractFunctionOp<RandomAccessibleInterval<T>, DefaultMesh>
+			AbstractFunctionOp<RandomAccessibleInterval<T>, Mesh>
 		implements
 			MarchingCubes,
 			Contingent {
@@ -128,47 +129,48 @@ public class DefaultMarchingCubes<T extends BooleanType<T>>
 				double[][] vertlist = new double[12][];
 
 				/* Find the vertices where the surface intersects the cube */
-				if (0 != (EDGE_TABLE[cubeindex] & 1))
-					vertlist[0] = (double[]) ops.run(interpolatorClass, p0, p1,
-							vertex_values[0], vertex_values[1], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 2))
-					vertlist[1] = (double[]) ops.run(interpolatorClass, p1, p2,
-							vertex_values[1], vertex_values[2], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 4))
-					vertlist[2] = (double[]) ops.run(interpolatorClass, p2, p3,
-							vertex_values[2], vertex_values[3], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 8))
-					vertlist[3] = (double[]) ops.run(interpolatorClass, p3, p0,
-							vertex_values[3], vertex_values[0], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 16))
-					vertlist[4] = (double[]) ops.run(interpolatorClass, p4, p5,
-							vertex_values[4], vertex_values[5], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 32))
-					vertlist[5] = (double[]) ops.run(interpolatorClass, p5, p6,
-							vertex_values[5], vertex_values[6], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 64))
-					vertlist[6] = (double[]) ops.run(interpolatorClass, p6, p7,
-							vertex_values[6], vertex_values[7], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 128))
-					vertlist[7] = (double[]) ops.run(interpolatorClass, p7, p4,
-							vertex_values[7], vertex_values[4], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 256))
-					vertlist[8] = (double[]) ops.run(interpolatorClass, p0, p4,
-							vertex_values[0], vertex_values[4], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 512))
-					vertlist[9] = (double[]) ops.run(interpolatorClass, p1, p5,
-							vertex_values[1], vertex_values[5], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 1024))
-					vertlist[10] = (double[]) ops.run(interpolatorClass, p2,
-							p6, vertex_values[2], vertex_values[6], isolevel);
-				if (0 != (EDGE_TABLE[cubeindex] & 2048))
-					vertlist[11] = (double[]) ops.run(interpolatorClass, p3,
-							p7, vertex_values[3], vertex_values[7], isolevel);
+				/* Find the vertices where the surface intersects the cube */
+				if (0 != (EDGE_TABLE[cubeindex] & 1)) {
+					vertlist[0] = interpolatePoint(p0, p1, vertex_values[0], vertex_values[1]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 2)) {
+					vertlist[1] = interpolatePoint(p1, p2, vertex_values[1], vertex_values[2]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 4)) {
+					vertlist[2] = interpolatePoint(p2, p3, vertex_values[2], vertex_values[3]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 8)) {
+					vertlist[3] = interpolatePoint(p3, p0, vertex_values[3], vertex_values[0]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 16)) {
+					vertlist[4] = interpolatePoint(p4, p5, vertex_values[4], vertex_values[5]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 32)) {
+					vertlist[5] = interpolatePoint(p5, p6, vertex_values[5], vertex_values[6]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 64)) {
+					vertlist[6] = interpolatePoint(p6, p7, vertex_values[6], vertex_values[7]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 128)) {
+					vertlist[7] = interpolatePoint(p7, p4, vertex_values[7], vertex_values[4]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 256)) {
+					vertlist[8] = interpolatePoint(p0, p4, vertex_values[0], vertex_values[4]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 512)) {
+					vertlist[9] = interpolatePoint(p1, p5, vertex_values[1], vertex_values[5]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 1024)) {					
+					vertlist[10] = interpolatePoint(p2, p6, vertex_values[2], vertex_values[6]);
+				}
+				if (0 != (EDGE_TABLE[cubeindex] & 2048)) {
+					vertlist[11] = interpolatePoint(p3, p7, vertex_values[3], vertex_values[7]);
+				}
 
 				/* Create the triangle */
 				for (i = 0; TRIANGLE_TABLE[cubeindex][i] != -1; i += 3) {
 
-					TriangularFacet face = new TriangularFacet(
+					DefaultTriangularFacet face = new DefaultTriangularFacet(
 							new Vertex(
 									vertlist[TRIANGLE_TABLE[cubeindex][i]][0],
 									vertlist[TRIANGLE_TABLE[cubeindex][i]][1],
@@ -186,6 +188,17 @@ public class DefaultMarchingCubes<T extends BooleanType<T>>
 			}
 		}
 		return output;
+	}
+	
+	private double[] interpolatePoint(int[] p0, int[] p1, double v0, double v1) {
+		interpolatorClass.setPoint1(p0);
+		interpolatorClass.setPoint2(p1);
+		interpolatorClass.setValue1(v0);
+		interpolatorClass.setValue2(v1);
+		interpolatorClass.setIsoLevel(isolevel);
+		interpolatorClass.run();
+		
+		return interpolatorClass.getOutput();
 	}
 
 	private int getCubeIndex(final double[] vertex_values) {
