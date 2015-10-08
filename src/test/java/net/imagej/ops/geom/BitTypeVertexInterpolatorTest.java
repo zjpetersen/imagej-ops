@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  * #L%
  */
-package net.imagej.ops.geometric3d;
+package net.imagej.ops.geom;
 
 import static org.junit.Assert.assertEquals;
 import net.imagej.ops.AbstractOpTest;
