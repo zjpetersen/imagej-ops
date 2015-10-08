@@ -29,11 +29,11 @@
  */
 package net.imagej.ops.geom;
 
-import org.scijava.ItemIO;
-import org.scijava.plugin.Parameter;
-
 import net.imagej.ops.AbstractOp;
 import net.imagej.ops.Contingent;
+
+import org.scijava.ItemIO;
+import org.scijava.plugin.Parameter;
 
 /**
  * This is the {@link AbstractVertexInterpolator}. A vertex interpolator
@@ -61,6 +61,31 @@ public abstract class AbstractVertexInterpolator extends AbstractOp
 
 	@Parameter(type = ItemIO.OUTPUT)
 	double[] output;
+	
+	@Override
+	public void setPoint1(int[] p) {
+		p1 = p;
+	}
+	
+	@Override
+	public void setPoint2(int[] p) {
+		p2 = p;
+	}
+	
+	@Override
+	public void setValue1(double d) {
+		p1Value = d;
+	}
+	
+	@Override
+	public void setValue2(double d) {
+		p2Value = d;
+	}
+	
+	@Override
+	public double[] getOutput() {
+		return output;
+	}
 	
 	@Override
 	public boolean conforms() {
