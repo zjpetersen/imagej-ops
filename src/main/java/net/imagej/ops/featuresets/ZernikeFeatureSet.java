@@ -42,7 +42,6 @@ import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.features.zernike.helper.ZernikeComputer;
 import net.imagej.ops.features.zernike.helper.ZernikeMoment;
-import net.imagej.ops.stats.StatOp;
 import net.imglib2.IterableInterval;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;

@@ -33,6 +33,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 import net.imagej.ops.Contingent;
 import net.imagej.ops.OpRef;
@@ -65,6 +66,7 @@ import net.imglib2.IterableInterval;
  * @param <T>
  * @param <O>
  */
+@Plugin(type = FeatureSet.class, label = "2D Haralick Features", description = "Calculates the 2D Haralick Features")
 public class Haralick2DFeatureSet<T, O> extends AbstractOpRefFeatureSet<IterableInterval<T>, O>
 		implements Contingent, IntensityFeatureSet<IterableInterval<T>, O> {
 

@@ -54,7 +54,6 @@ import net.imagej.ops.Ops.Stats.SumOfInverses;
 import net.imagej.ops.Ops.Stats.SumOfLogs;
 import net.imagej.ops.Ops.Stats.SumOfSquares;
 import net.imagej.ops.Ops.Stats.Variance;
-import net.imagej.ops.stats.StatOp;
 
 /**
  * {@link FeatureSet} to calculate {@link StatOp}s.
